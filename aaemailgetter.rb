@@ -47,7 +47,7 @@ class AAInfo
   def find_searcher_line
     found_line = ''
     @todays_pairings.each do |line|
-      if /:students=>\[.+, :#{@searcher}/ =~ line || /:students=>\[:#{@searcher}/ =~ line # looks for name in either position
+      if /:students=>\[:\w+, :#{@searcher}/ =~ line || /:students=>\[:#{@searcher}/ =~ line
         found_line = line
         break
       end
@@ -58,10 +58,9 @@ class AAInfo
 
   def parse_search_line
     line_to_parse = find_searcher_line.strip.split(' ')
-
     partner_find = line_to_parse[0..1].join.split('[')[1].delete(']').split(',')
     partner_find.each do |person|
-      if person !="#{@searcher}"
+      unless person == ":#{@searcher}"
         @partner = person.delete(':').to_sym
       end
     end
@@ -100,13 +99,3 @@ end
 
 
 new_search = AAInfo.new
-
-
-  #crawls github for latest pairing / reviewers / table # / early or late
-
-
-
-  #sends email with this information when run
-
-
-
